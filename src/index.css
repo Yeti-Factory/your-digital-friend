@@ -6,40 +6,40 @@
 
 @layer base {
   :root {
-    --background: 30 50% 97%;
-    --foreground: 25 30% 15%;
+    --background: 45 40% 97%;
+    --foreground: 150 30% 12%;
 
     --card: 0 0% 100%;
-    --card-foreground: 25 30% 15%;
+    --card-foreground: 150 30% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 25 30% 15%;
+    --popover-foreground: 150 30% 12%;
 
-    --primary: 25 80% 50%;
+    --primary: 145 55% 38%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 45 70% 90%;
-    --secondary-foreground: 25 40% 25%;
+    --secondary: 45 60% 92%;
+    --secondary-foreground: 150 30% 15%;
 
-    --muted: 30 30% 93%;
-    --muted-foreground: 25 15% 45%;
+    --muted: 45 25% 93%;
+    --muted-foreground: 150 10% 45%;
 
-    --accent: 160 40% 45%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 45 85% 55%;
+    --accent-foreground: 150 30% 12%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 30 25% 88%;
-    --input: 30 25% 88%;
-    --ring: 25 80% 50%;
+    --border: 45 20% 88%;
+    --input: 45 20% 88%;
+    --ring: 145 55% 38%;
 
     --radius: 1rem;
 
-    --doggy-warm: 25 80% 50%;
-    --doggy-sand: 40 50% 92%;
-    --doggy-green: 160 40% 45%;
-    --doggy-brown: 25 40% 30%;
+    --doggy-green: 145 55% 38%;
+    --doggy-red: 0 75% 48%;
+    --doggy-gold: 45 85% 55%;
+    --doggy-sand: 45 40% 94%;
   }
 }
 
