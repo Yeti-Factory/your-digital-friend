@@ -1,6 +1,6 @@
 import { MessageCircle, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logo from "@/assets/doggy-oasis-logo.jpg";
+import logo from "@/assets/doggy-oasis-logo.png";
 
 const suggestions = [
   "Comment éduquer mon chien ?",
