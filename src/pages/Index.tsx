@@ -1,14 +1,31 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import WelcomeScreen from "@/components/WelcomeScreen";
+import ChatScreen from "@/components/ChatScreen";
 
 const Index = () => {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
-  );
+  const [chatOpen, setChatOpen] = useState(false);
+  const [initialMessage, setInitialMessage] = useState<string | undefined>();
+
+  const handleStart = () => {
+    setInitialMessage(undefined);
+    setChatOpen(true);
+  };
+
+  const handleSuggestion = (q: string) => {
+    setInitialMessage(q);
+    setChatOpen(true);
+  };
+
+  const handleBack = () => {
+    setChatOpen(false);
+    setInitialMessage(undefined);
+  };
+
+  if (chatOpen) {
+    return <ChatScreen onBack={handleBack} initialMessage={initialMessage} />;
+  }
+
+  return <WelcomeScreen onStart={handleStart} onSuggestion={handleSuggestion} />;
 };
 
 export default Index;
