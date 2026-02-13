@@ -28,7 +28,7 @@ const WelcomeScreen = ({ onStart, onSuggestion }: WelcomeScreenProps) => {
       <img src={logo} alt="Doggy Oasis International" className="w-48 h-auto mb-6" />
 
       <p className="text-muted-foreground text-center max-w-md mb-8 text-base leading-relaxed">
-        Merci d'avoir offert une nouvelle vie à l'un de nos protégés ! 🐾 Cette application est votre compagnon au quotidien : posez vos questions sur l'éducation, les soins, l'alimentation ou le comportement de votre chien, et recevez des conseils adaptés basés sur notre guide d'accueil.
+        Merci d'avoir offert une nouvelle vie à l'un de nos protégés ! 🐾 Cette application est votre compagnon au quotidien : posez vos questions sur l'éducation, les soins, l'alimentation ou le comportement de votre chien, et recevez des conseils adaptés basés sur notre expérience.
       </p>
 
       <Button onClick={onStart} size="lg" className="rounded-full gap-2 px-8 mb-10 text-base font-semibold">
