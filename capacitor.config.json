@@ -1,0 +1,9 @@
+{
+  "appId": "app.lovable.227980df888849d39fb0bc2e5d1e4d9f",
+  "appName": "Doggy Oasis",
+  "webDir": "dist",
+  "server": {
+    "url": "https://227980df-8888-49d3-9fb0-bc2e5d1e4d9f.lovableproject.com?forceHideBadge=true",
+    "cleartext": true
+  }
+}
