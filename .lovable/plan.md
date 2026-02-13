@@ -1,40 +1,35 @@
 
 
-# Detecter le navigateur et guider vers Chrome si necessaire
+# Reequilibrer l'ecran d'accueil : texte + bouton + visibilite de la liste
 
-## Le probleme
-Sur Android, Firefox (et d'autres navigateurs comme Samsung Internet, Opera...) ne supportent pas toujours l'installation PWA de la meme maniere que Chrome. Les utilisateurs sur ces navigateurs voient les instructions pour Chrome qui ne correspondent pas a leur situation.
+## Ce qui change
 
-## La solution
-Ajouter une detection du navigateur dans la page `/install`. Si l'utilisateur est sur Android mais n'utilise pas Chrome, on affiche un message specifique qui :
-1. Explique que Chrome est recommande pour une installation simple
-2. Propose un bouton pour copier le lien de la page
-3. Indique d'ouvrir ce lien dans Chrome pour installer l'app en un clic
+### 1. Nouveau texte d'invitation
+- **Avant** : "Si votre question n'est pas dans cette liste, posez-la ici"
+- **Apres** : "Si votre question ne se trouve pas dans la liste ci-bas, posez-la en cliquant ici"
 
-## Ce que l'utilisateur verra
+### 2. Nouveau texte du bouton
+- **Avant** : "Demarrer une conversation"
+- **Apres** : "Cliquer pour poser votre question"
 
-### Sur Android avec Chrome (pas de changement)
-- Le bouton "Installer l'application" ou les instructions Chrome habituelles
+### 3. Reduire la taille du bouton pour qu'il ne domine pas la page
+- Passer de `size="lg"` a `size="default"` (plus petit)
+- Reduire le padding horizontal (`px-8` vers `px-5`)
+- Reduire la taille du texte (`text-base` vers `text-sm`)
+- Le bouton reste visible et cliquable, mais ne saute plus aux yeux par rapport a la liste
 
-### Sur Android avec Firefox / autre navigateur
-Un ecran avec :
-- Un message : "Pour installer facilement, ouvrez cette page dans Chrome"
-- 3 etapes visuelles :
-  1. "Copiez le lien ci-dessous"  (avec un bouton pour copier automatiquement)
-  2. "Ouvrez Chrome sur votre telephone"
-  3. "Collez le lien et suivez les instructions"
-- Un bouton "Copier le lien" qui copie l'URL dans le presse-papier avec une confirmation visuelle
+### 4. Rendre la liste de questions plus visible
+- Ajouter une fleche vers le bas (icone `ChevronDown` ou `ArrowDown`) entre le bloc texte/bouton et la liste, pour guider le regard
+- Augmenter legerement le titre "Questions frequentes" (passer de `text-sm` a `text-base` et ajouter une couleur plus marquee)
 
-### Sur iOS (pas de changement)
-- Les instructions Safari restent identiques
+## Fichier modifie
+`src/components/WelcomeScreen.tsx` uniquement
 
 ## Details techniques
-
-### Fichier modifie : `src/pages/Install.tsx`
-- Ajouter une detection du navigateur via `navigator.userAgent` pour identifier Chrome, Firefox, Samsung Internet, etc.
-- Ajouter un nouvel etat `isNonChromeAndroid` (true si Android + pas Chrome)
-- Ajouter une fonction `copyLink` qui utilise `navigator.clipboard.writeText()` pour copier l'URL
-- Inserer un nouveau bloc conditionnel entre le bloc iOS et le bloc Chrome/fallback actuel
-- Importer l'icone `Copy` et `ExternalLink` depuis lucide-react
-- Le bloc affiche les 3 etapes visuelles dans le meme style que les autres instructions (numeros verts, fond colore, icones)
+- Importer `ChevronDown` depuis lucide-react
+- Modifier le texte ligne 36
+- Modifier le texte du bouton ligne 40
+- Reduire les classes CSS du bouton ligne 38
+- Ajouter une icone fleche animee entre le bloc bouton (ligne 42) et la liste (ligne 44)
+- Renforcer le style du titre "Questions frequentes" ligne 45
 
