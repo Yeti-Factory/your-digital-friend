@@ -1,4 +1,4 @@
-import { MessageCircle, Heart } from "lucide-react";
+import { MessageCircle, Heart, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/doggy-oasis-logo.png";
 
@@ -33,16 +33,20 @@ const WelcomeScreen = ({ onStart, onSuggestion }: WelcomeScreenProps) => {
 
       <div className="flex flex-col sm:flex-row items-center gap-4 mb-10 w-full max-w-md">
         <p className="text-muted-foreground text-sm text-center sm:text-left">
-          Si votre question n'est pas dans cette liste, posez-la ici
+          Si votre question ne se trouve pas dans la liste ci-bas, posez-la en cliquant ici
         </p>
-        <Button onClick={onStart} size="lg" className="rounded-full gap-2 px-8 text-base font-semibold whitespace-nowrap shrink-0">
-          <MessageCircle className="w-5 h-5" />
-          Démarrer une conversation
+        <Button onClick={onStart} size="default" className="rounded-full gap-2 px-5 text-sm font-semibold whitespace-nowrap shrink-0">
+          <MessageCircle className="w-4 h-4" />
+          Cliquer pour poser votre question
         </Button>
       </div>
 
+      <div className="flex justify-center my-2 animate-bounce">
+        <ChevronDown className="w-6 h-6 text-primary" />
+      </div>
+
       <div className="w-full max-w-md">
-        <p className="text-sm font-semibold text-muted-foreground mb-3 text-center">Questions fréquentes</p>
+        <p className="text-base font-bold text-foreground mb-3 text-center">Questions fréquentes</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {suggestions.map((q) => (
             <button
