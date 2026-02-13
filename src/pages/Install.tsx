@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Download, Share, Plus, Check, ArrowRight, Loader2 } from "lucide-react";
+import { Download, Share, Plus, Check, ArrowRight, Loader2, MoreVertical } from "lucide-react";
 import { Link } from "react-router-dom";
 import logo from "@/assets/doggy-oasis-logo.png";
 
@@ -169,11 +169,43 @@ const Install = () => {
               </Button>
             </>
           ) : (
-            /* Fallback: no prompt available */
+            /* Fallback: visual step-by-step instructions for Android */
             <>
               <p className="text-muted-foreground">
-                Pour installer l'application, ouvrez le menu de votre navigateur puis sélectionnez <strong>"Installer l'application"</strong> ou <strong>"Ajouter à l'écran d'accueil"</strong>.
+                Installez Doggy Oasis en 3 étapes simples :
               </p>
+
+              <div className="w-full space-y-4 text-left">
+                <div className="flex items-start gap-4 p-3 rounded-lg bg-[hsl(142,50%,95%)]">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[hsl(142,50%,35%)] text-white flex items-center justify-center font-bold text-sm">1</div>
+                  <div>
+                    <p className="font-semibold text-sm">Appuyez sur les 3 points</p>
+                    <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
+                      <MoreVertical className="w-4 h-4" /> en haut à droite de Chrome
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4 p-3 rounded-lg bg-[hsl(142,50%,95%)]">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[hsl(142,50%,35%)] text-white flex items-center justify-center font-bold text-sm">2</div>
+                  <div>
+                    <p className="font-semibold text-sm">Sélectionnez "Installer l'application"</p>
+                    <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
+                      <Download className="w-4 h-4" /> dans le menu qui apparaît
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4 p-3 rounded-lg bg-[hsl(142,50%,95%)]">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[hsl(142,50%,35%)] text-white flex items-center justify-center font-bold text-sm">3</div>
+                  <div>
+                    <p className="font-semibold text-sm">Confirmez en appuyant sur "Installer"</p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      L'icône Doggy Oasis apparaîtra sur votre écran d'accueil
+                    </p>
+                  </div>
+                </div>
+              </div>
             </>
           )}
 
