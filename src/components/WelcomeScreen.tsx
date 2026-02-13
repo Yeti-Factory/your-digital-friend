@@ -1,13 +1,14 @@
-import { Dog, MessageCircle, Heart } from "lucide-react";
+import { MessageCircle, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logo from "@/assets/doggy-oasis-logo.jpg";
 
 const suggestions = [
   "Comment éduquer mon chien ?",
   "Que donner à manger à mon chiot ?",
   "Comment gérer l'anxiété de séparation ?",
-  "Quels sont les bons gestes de soin ?",
+  "Quels sont les premiers achats à prévoir ?",
   "Comment promener mon chien en laisse ?",
-  "Mon chien aboie beaucoup, que faire ?",
+  "Mon chien a peur, que faire les premiers jours ?",
 ];
 
 interface WelcomeScreenProps {
@@ -18,14 +19,9 @@ interface WelcomeScreenProps {
 const WelcomeScreen = ({ onStart, onSuggestion }: WelcomeScreenProps) => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-6 py-10">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
-          <Dog className="w-9 h-9 text-primary" />
-        </div>
-      </div>
+      <img src={logo} alt="Doggy Oasis International" className="w-48 h-auto mb-6" />
 
-      <h1 className="text-3xl font-bold text-center mb-2">Doggy Oasis</h1>
-      <p className="text-muted-foreground text-center max-w-sm mb-8">
+      <p className="text-muted-foreground text-center max-w-sm mb-8 text-base">
         Bienvenue ! Posez-moi vos questions sur votre compagnon 🐾
       </p>
 
@@ -50,7 +46,7 @@ const WelcomeScreen = ({ onStart, onSuggestion }: WelcomeScreenProps) => {
       </div>
 
       <div className="mt-auto pt-10 flex items-center gap-1 text-xs text-muted-foreground">
-        <Heart className="w-3 h-3" /> Doggy Oasis
+        <Heart className="w-3 h-3" /> Doggy Oasis International
       </div>
     </div>
   );
