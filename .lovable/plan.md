@@ -1,35 +1,29 @@
 
 
-# Corriger le bouton d'installation Android
+# Rendre l'installation Android simple et visuelle
 
-## Le probleme
-L'evenement `beforeinstallprompt` (qui permet d'afficher le bouton "Installer") se declenche souvent **avant** que la page `/install` ne soit chargee. Du coup, l'evenement est perdu et l'utilisateur voit le message de fallback complique au lieu du bouton simple.
+## Probleme
+Sur Android, l'evenement `beforeinstallprompt` ne se declenche pas de maniere fiable en production. Le message de fallback actuel ("ouvrez le menu de votre navigateur...") est trop vague et personne ne sait quoi faire.
 
-## La solution
-Capturer l'evenement `beforeinstallprompt` **des le demarrage de l'application** (dans `main.tsx`) et le stocker dans une variable globale. La page Install viendra ensuite lire cette variable.
+## Solution en 2 parties
 
-En plus, on ajoutera un **delai d'attente** avec un spinner pour laisser le temps a l'evenement d'arriver, au lieu d'afficher immediatement le fallback.
+### 1. Corriger le manifest PWA pour ameliorer les chances d'installation automatique
+Ajouter `start_url: "/"` dans la configuration du manifest dans `vite.config.ts`. C'est un critere requis par Chrome pour declencher `beforeinstallprompt`. Sans lui, l'evenement peut ne jamais se declencher.
 
-## Ce que l'utilisateur verra
-1. Il scanne le QR code
-2. La page s'ouvre avec un petit chargement (1-2 secondes)
-3. Un gros bouton vert **"Installer l'application"** apparait
-4. Il clique dessus, et l'installation se lance automatiquement
+### 2. Remplacer le message de fallback par des instructions visuelles etape par etape
+Si le bouton automatique ne fonctionne toujours pas, l'utilisateur verra des instructions claires et illustrees (comme celles pour iOS), avec 3 etapes numerotees :
 
-## Details techniques
+1. "Appuyez sur les 3 points en haut a droite de Chrome" (avec icone)
+2. "Selectionnez 'Installer l'application'" (avec icone)  
+3. "Confirmez en appuyant sur 'Installer'" 
 
-### Fichier modifie : `src/main.tsx`
-- Ajouter un listener global pour `beforeinstallprompt` qui stocke l'evenement dans `window.__deferredInstallPrompt`
-- L'evenement est capture immediatement au chargement, avant meme que React ne demarre
+### Fichiers modifies
 
-### Fichier modifie : `src/pages/Install.tsx`
-- Lire la variable globale `window.__deferredInstallPrompt` au montage du composant
-- Ajouter un etat "chargement" avec un delai de 3 secondes pour attendre que l'evenement arrive
-- Pendant le chargement, afficher un spinner avec "Preparation de l'installation..."
-- Si apres 3 secondes l'evenement n'est toujours pas arrive, alors seulement afficher les instructions manuelles (fallback)
+**`vite.config.ts`** : Ajouter `start_url: "/"` et `scope: "/"` au manifest PWA.
 
-### Resultat
-- Sur Android : le bouton d'installation apparait quasi-systematiquement
-- Sur iOS : les instructions etape par etape s'affichent (pas de changement)
-- Si deja installe : message de confirmation (pas de changement)
+**`src/pages/Install.tsx`** : Remplacer le bloc de fallback textuel par des instructions visuelles etape par etape avec des numeros, des icones et un fond colore, identiques au style des instructions iOS deja en place.
 
+### Resultat attendu
+- Si Chrome supporte l'installation automatique : le bouton vert "Installer" apparait (pas de changement)
+- Si le bouton automatique ne fonctionne pas : des instructions claires et visuelles guident l'utilisateur pas a pas
+- Sur iOS : aucun changement, les instructions Safari restent identiques
