@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Download, Share, Plus, Check, ArrowRight, Loader2, MoreVertical } from "lucide-react";
+import { Download, Share, Plus, Check, ArrowRight, Loader2, MoreVertical, Copy, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import logo from "@/assets/doggy-oasis-logo.png";
 
@@ -14,8 +14,10 @@ const Install = () => {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstalled, setIsInstalled] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
+  const [isNonChromeAndroid, setIsNonChromeAndroid] = useState(false);
   const [installing, setInstalling] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     // Detect iOS
@@ -23,6 +25,10 @@ const Install = () => {
     const isIOSDevice = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
     setIsIOS(isIOSDevice);
 
+    // Detect non-Chrome Android browsers
+    const isAndroid = /Android/i.test(ua);
+    const isChrome = /Chrome/i.test(ua) && !/OPR|Opera|Edge|SamsungBrowser|UCBrowser|Firefox/i.test(ua);
+    setIsNonChromeAndroid(isAndroid && !isChrome);
     // Detect standalone mode (already installed)
     const isStandalone = window.matchMedia("(display-mode: standalone)").matches
       || ("standalone" in navigator && (navigator as any).standalone === true);
@@ -74,6 +80,23 @@ const Install = () => {
     }
     setDeferredPrompt(null);
     setInstalling(false);
+  };
+
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      const input = document.createElement("input");
+      input.value = window.location.href;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand("copy");
+      document.body.removeChild(input);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
   };
 
   return (
@@ -151,6 +174,63 @@ const Install = () => {
                   </div>
                 </div>
               </div>
+            </>
+          ) : isNonChromeAndroid ? (
+            /* Non-Chrome Android: guide to Chrome */
+            <>
+              <p className="text-muted-foreground">
+                Pour installer facilement, ouvrez cette page dans <strong>Chrome</strong> :
+              </p>
+
+              <div className="w-full space-y-4 text-left">
+                <div className="flex items-start gap-4 p-3 rounded-lg bg-[hsl(142,50%,95%)]">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[hsl(142,50%,35%)] text-white flex items-center justify-center font-bold text-sm">1</div>
+                  <div>
+                    <p className="font-semibold text-sm">Copiez le lien ci-dessous</p>
+                    <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
+                      <Copy className="w-4 h-4" /> avec le bouton "Copier le lien"
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4 p-3 rounded-lg bg-[hsl(142,50%,95%)]">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[hsl(142,50%,35%)] text-white flex items-center justify-center font-bold text-sm">2</div>
+                  <div>
+                    <p className="font-semibold text-sm">Ouvrez Chrome sur votre téléphone</p>
+                    <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
+                      <ExternalLink className="w-4 h-4" /> l'application Google Chrome
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4 p-3 rounded-lg bg-[hsl(142,50%,95%)]">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[hsl(142,50%,35%)] text-white flex items-center justify-center font-bold text-sm">3</div>
+                  <div>
+                    <p className="font-semibold text-sm">Collez le lien et suivez les instructions</p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      L'installation se lancera automatiquement
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <Button
+                size="lg"
+                onClick={copyLink}
+                className="bg-[hsl(142,50%,35%)] hover:bg-[hsl(142,50%,30%)] text-white gap-2 w-full"
+              >
+                {copied ? (
+                  <>
+                    <Check className="w-5 h-5" />
+                    Lien copié !
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-5 h-5" />
+                    Copier le lien
+                  </>
+                )}
+              </Button>
             </>
           ) : deferredPrompt ? (
             /* Android with install prompt available */
