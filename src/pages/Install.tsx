@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Download, Share, Plus, Check, ArrowRight } from "lucide-react";
+import { Download, Share, Plus, Check, ArrowRight, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import logo from "@/assets/doggy-oasis-logo.png";
 
@@ -15,6 +15,7 @@ const Install = () => {
   const [isInstalled, setIsInstalled] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
   const [installing, setInstalling] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Detect iOS
@@ -27,14 +28,40 @@ const Install = () => {
       || ("standalone" in navigator && (navigator as any).standalone === true);
     setIsInstalled(isStandalone);
 
-    // Capture beforeinstallprompt for Android/Chrome
+    // If already installed or iOS, no need to wait
+    if (isStandalone || isIOSDevice) {
+      setLoading(false);
+      return;
+    }
+
+    // Check global variable from main.tsx
+    if (window.__deferredInstallPrompt) {
+      setDeferredPrompt(window.__deferredInstallPrompt as BeforeInstallPromptEvent);
+      setLoading(false);
+      return;
+    }
+
+    // Listen for the event in case it hasn't fired yet
     const handler = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
+      setLoading(false);
     };
     window.addEventListener("beforeinstallprompt", handler);
 
-    return () => window.removeEventListener("beforeinstallprompt", handler);
+    // Wait up to 3 seconds then stop loading
+    const timeout = setTimeout(() => {
+      // Check one more time
+      if (window.__deferredInstallPrompt) {
+        setDeferredPrompt(window.__deferredInstallPrompt as BeforeInstallPromptEvent);
+      }
+      setLoading(false);
+    }, 3000);
+
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handler);
+      clearTimeout(timeout);
+    };
   }, []);
 
   const handleInstall = async () => {
@@ -64,7 +91,13 @@ const Install = () => {
             Doggy Oasis
           </h1>
 
-          {isInstalled ? (
+          {loading ? (
+            /* Loading spinner */
+            <>
+              <Loader2 className="w-8 h-8 animate-spin text-[hsl(142,50%,35%)]" />
+              <p className="text-muted-foreground">Préparation de l'installation...</p>
+            </>
+          ) : isInstalled ? (
             /* Already installed */
             <>
               <div className="flex items-center gap-2 text-[hsl(142,50%,35%)]">
