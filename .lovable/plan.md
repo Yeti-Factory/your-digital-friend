@@ -1,45 +1,34 @@
 
 
-# 🐕 Doggy Oasis — Chatbot pour Adoptants
+# Mise a jour de l'ecran d'accueil
 
-## Objectif
-Application mobile téléchargeable (App Store & Google Play) permettant aux adoptants de chiens de Doggy Oasis de poser des questions sur l'éducation, les soins, la nutrition, les promenades et le comportement de leur chien. Le chatbot répond en priorité à partir du livret d'accueil, puis complète avec des recherches web fiables.
+## Fichier modifie
+`src/components/WelcomeScreen.tsx`
 
----
+## Changements
 
-## 1. Écran d'accueil
-- Logo et branding Doggy Oasis (couleurs fournies par vous)
-- Message de bienvenue chaleureux : "Bienvenue chez Doggy Oasis ! Posez-moi vos questions sur votre compagnon 🐾"
-- Bouton pour démarrer une conversation
-- Suggestions de questions fréquentes (ex: "Comment éduquer mon chien ?", "Que donner à manger à mon chiot ?")
+### 1. Texte de bienvenue revu
+Remplacer le paragraphe actuel par un texte qui :
+- Remercie les adoptants d'avoir donne une chance a un chien
+- Explique clairement le but de l'application : un assistant pour accompagner les adoptants au quotidien (education, soins, alimentation, comportement, integration)
 
-## 2. Interface de Chat
-- Conversation fluide style messagerie, avec réponses en streaming (les mots apparaissent au fur et à mesure)
-- Rendu riche des réponses (titres, listes, liens) grâce au format markdown
-- Indication quand la réponse provient du livret d'accueil vs d'une source web
-- Historique de conversation conservé pendant la session
-- Bouton pour démarrer une nouvelle conversation
+Exemple :
+> "Merci d'avoir offert une nouvelle vie a l'un de nos proteges ! Cette application est votre compagnon au quotidien : posez vos questions sur l'education, les soins, l'alimentation ou le comportement de votre chien, et recevez des conseils adaptes bases sur notre guide d'accueil."
 
-## 3. Intelligence du Chatbot (Backend)
-- **Source principale** : Le contenu du livret d'accueil PDF de Doggy Oasis sera intégré comme base de connaissances prioritaire
-- **Source secondaire** : Recherche web en temps réel sur des sites fiables pour compléter les réponses (éducation canine, santé animale, comportement)
-- Le chatbot répond **uniquement en français**
-- Personnalité bienveillante et rassurante, adaptée aux nouveaux adoptants
-- Redirige vers un vétérinaire en cas de question médicale urgente
+### 2. Suggestions mises a jour (12 questions)
+- "Comment apprendre les bases a mon chien ?" (remplace "eduquer")
+- "Mon chien est stresse en ville, que faire ?" (remplace "alimentation")
+- "Comment gerer l'anxiete de separation ?"
+- "Quels sont les premiers achats a prevoir ?"
+- "Comment promener mon chien en laisse ?"
+- "Mon chien a peur, que faire les premiers jours ?"
+- "Comment presenter mon chien a mon chat ?"
+- "Quelle est la regle des 3 jours, 3 semaines, 3 mois ?"
+- "Comment faire la transition alimentaire ?"
+- "Mon chien n'est pas propre, que faire ?"
+- "Quand prendre rendez-vous chez le veterinaire ?"
+- "Quels partenaires peuvent m'aider ?" (bases sur le livret : Agria, Tout pour le Toutou, Olykan, Esprit Dog, Hector Kitchen, Happy Scoop)
 
-## 4. Application Mobile Native (Capacitor)
-- Application téléchargeable sur **Google Play** et **App Store**
-- Interface optimisée pour mobile (tactile, responsive)
-- Chargement rapide et expérience fluide
-
-## 5. Design aux couleurs de Doggy Oasis
-- Intégration de votre logo et palette de couleurs (que vous fournirez)
-- Design chaleureux et professionnel adapté à l'univers animalier
-
----
-
-## Prochaines étapes après l'implémentation
-- Vous fournirez le **logo**, les **codes couleurs** et le **livret d'accueil en PDF**
-- Configuration de Capacitor pour générer les apps iOS et Android
-- Publication sur les stores (nécessite un compte développeur Apple et Google)
+### 3. Ajustement grille
+La grille reste en `sm:grid-cols-2` pour accueillir les 12 questions de facon lisible.
 
