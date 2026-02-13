@@ -1,29 +1,47 @@
 
-# Ajout de boutons d'action apres chaque reponse du chatbot
+# Rendre l'application installable sur smartphone (PWA)
 
-## Objectif
-Apres chaque reponse de l'assistant, afficher deux boutons visibles permettant a l'utilisateur de :
-1. **Revenir a la page d'accueil** (liste des questions frequentes)
-2. **Poser une autre question** (focus sur le champ de saisie pour continuer la conversation)
+## Ce que cela va permettre
+Vos adoptants pourront installer l'application directement depuis leur navigateur sur leur telephone (iPhone ou Android), avec une icone Doggy Oasis sur leur ecran d'accueil, comme une vraie application mobile.
 
-## Ce qui sera modifie
+## Etapes prevues
 
-Un seul fichier : **`src/components/ChatScreen.tsx`**
+### 1. Creer les icones de l'application
+A partir du logo Doggy Oasis existant, creer plusieurs tailles d'icones dans le dossier `public/` :
+- `pwa-192x192.png` (icone standard)
+- `pwa-512x512.png` (icone haute resolution)
+- `apple-touch-icon-180x180.png` (specifique iPhone)
 
-## Changements prevus
+Le logo sera recadre en carre pour s'adapter au format d'icone mobile.
 
-Apres chaque message de l'assistant (et uniquement quand le chargement est termine), deux boutons apparaitront sous la derniere reponse :
+### 2. Installer et configurer le plugin PWA
+- Installer `vite-plugin-pwa`
+- Configurer dans `vite.config.ts` avec :
+  - Le manifeste de l'application (nom, couleurs, icones)
+  - Le service worker pour le mode hors-ligne
+  - L'exclusion de la route `/~oauth` du cache
 
-- **"Retour a l'accueil"** : icone Home + texte, appelle `onBack` pour revenir au WelcomeScreen
-- **"Poser une autre question"** : icone MessageCircle + texte, place le focus sur le champ de saisie
+### 3. Mettre a jour les balises HTML
+Dans `index.html`, ajouter :
+- Le lien vers l'icone Apple Touch
+- La couleur du theme pour la barre de navigation mobile
 
-Ces boutons ne s'afficheront que :
-- Sous le **dernier** message assistant
-- Quand le chatbot **n'est plus en train de repondre** (pas pendant le streaming)
+### 4. Registrer le service worker
+Dans `src/main.tsx`, ajouter l'enregistrement du service worker PWA.
 
 ## Detail technique
 
-- Ajout d'une condition sur le dernier message : si `i === messages.length - 1` et `msg.role === "assistant"` et `!isLoading`
-- Rendu de deux boutons avec `variant="outline"` et style arrondi
-- Le bouton "Poser une autre question" utilise `inputRef.current?.focus()` pour activer le champ de saisie
-- Import de l'icone `Home` depuis `lucide-react`
+**Fichiers modifies :**
+- `vite.config.ts` : ajout du plugin `VitePWA` avec configuration du manifeste (nom: "Doggy Oasis", couleur de theme, icones, mode standalone)
+- `index.html` : ajout de la balise `<link rel="apple-touch-icon">`
+- `src/main.tsx` : enregistrement du service worker via `registerSW`
+
+**Fichiers crees :**
+- `public/pwa-192x192.png`, `public/pwa-512x512.png`, `public/apple-touch-icon-180x180.png` : icones generees a partir du logo Doggy Oasis
+
+**Dependance ajoutee :**
+- `vite-plugin-pwa`
+
+## Comment les utilisateurs installeront l'app
+- **iPhone** : Ouvrir le site dans Safari > Partager > "Sur l'ecran d'accueil"
+- **Android** : Le navigateur proposera automatiquement l'installation, ou via le menu > "Installer l'application"
