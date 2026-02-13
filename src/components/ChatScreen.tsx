@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { ArrowLeft, Send, RotateCcw, Loader2 } from "lucide-react";
+import { ArrowLeft, Send, RotateCcw, Loader2, Home, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Message, streamChat } from "@/lib/chat-stream";
@@ -110,22 +110,36 @@ const ChatScreen = ({ onBack, initialMessage }: ChatScreenProps) => {
             </p>
           )}
           {messages.map((msg, i) => (
-            <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-              <div
-                className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
-                  msg.role === "user"
-                    ? "bg-primary text-primary-foreground rounded-br-md"
-                    : "bg-card border border-border rounded-bl-md"
-                }`}
-              >
-                {msg.role === "assistant" ? (
-                  <div className="prose prose-sm max-w-none dark:prose-invert prose-headings:font-semibold prose-p:my-1 prose-ul:my-1 prose-li:my-0">
-                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.content}</ReactMarkdown>
-                  </div>
-                ) : (
-                  msg.content
-                )}
+            <div key={i}>
+              <div className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+                <div
+                  className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
+                    msg.role === "user"
+                      ? "bg-primary text-primary-foreground rounded-br-md"
+                      : "bg-card border border-border rounded-bl-md"
+                  }`}
+                >
+                  {msg.role === "assistant" ? (
+                    <div className="prose prose-sm max-w-none dark:prose-invert prose-headings:font-semibold prose-p:my-1 prose-ul:my-1 prose-li:my-0">
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.content}</ReactMarkdown>
+                    </div>
+                  ) : (
+                    msg.content
+                  )}
+                </div>
               </div>
+              {msg.role === "assistant" && i === messages.length - 1 && !isLoading && (
+                <div className="flex flex-wrap gap-2 mt-3 ml-1">
+                  <Button variant="outline" size="sm" className="rounded-xl" onClick={onBack}>
+                    <Home className="w-4 h-4 mr-1" />
+                    Retour à l'accueil
+                  </Button>
+                  <Button variant="outline" size="sm" className="rounded-xl" onClick={() => inputRef.current?.focus()}>
+                    <MessageCircle className="w-4 h-4 mr-1" />
+                    Poser une autre question
+                  </Button>
+                </div>
+              )}
             </div>
           ))}
           {isLoading && messages[messages.length - 1]?.role !== "assistant" && (
