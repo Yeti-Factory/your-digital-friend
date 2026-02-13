@@ -31,10 +31,15 @@ const WelcomeScreen = ({ onStart, onSuggestion }: WelcomeScreenProps) => {
         Merci d'avoir offert une nouvelle vie à l'un de nos protégés ! 🐾 Cette application est votre compagnon au quotidien : posez vos questions sur l'éducation, les soins, l'alimentation ou le comportement de votre chien, et recevez des conseils adaptés basés sur notre expérience.
       </p>
 
-      <Button onClick={onStart} size="lg" className="rounded-full gap-2 px-8 mb-10 text-base font-semibold">
-        <MessageCircle className="w-5 h-5" />
-        Démarrer une conversation
-      </Button>
+      <div className="flex flex-col sm:flex-row items-center gap-4 mb-10 w-full max-w-md">
+        <p className="text-muted-foreground text-sm text-center sm:text-left">
+          Si votre question n'est pas dans cette liste, posez-la ici
+        </p>
+        <Button onClick={onStart} size="lg" className="rounded-full gap-2 px-8 text-base font-semibold whitespace-nowrap shrink-0">
+          <MessageCircle className="w-5 h-5" />
+          Démarrer une conversation
+        </Button>
+      </div>
 
       <div className="w-full max-w-md">
         <p className="text-sm font-semibold text-muted-foreground mb-3 text-center">Questions fréquentes</p>
