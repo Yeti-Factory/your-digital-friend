@@ -1,29 +1,17 @@
 
+# Supprimer la mention du "livret d'accueil" dans les reponses du chatbot
 
-# Rendre l'installation Android simple et visuelle
+## Ce qui change
+Le chatbot ne dira plus "D'apres notre livret d'accueil" ou "D'apres notre guide d'accueil". A la place, il utilisera des formulations naturelles comme "D'apres notre experience" ou ne mentionnera rien du tout.
 
-## Probleme
-Sur Android, l'evenement `beforeinstallprompt` ne se declenche pas de maniere fiable en production. Le message de fallback actuel ("ouvrez le menu de votre navigateur...") est trop vague et personne ne sait quoi faire.
+## Modification
+Un seul fichier est concerne : `supabase/functions/chat/index.ts`
 
-## Solution en 2 parties
+Dans le prompt systeme (lignes 119-121), les regles seront modifiees :
+- **Avant** : "Quand ta reponse vient du livret, mentionne-le naturellement (ex: 'D'apres notre guide d'accueil...')"
+- **Apres** : "Ne mentionne JAMAIS le livret d'accueil. Presente les informations naturellement, comme venant de l'experience de Doggy Oasis (ex: 'D'apres notre experience...', 'Notre experience nous montre que...') ou sans introduction particuliere."
 
-### 1. Corriger le manifest PWA pour ameliorer les chances d'installation automatique
-Ajouter `start_url: "/"` dans la configuration du manifest dans `vite.config.ts`. C'est un critere requis par Chrome pour declencher `beforeinstallprompt`. Sans lui, l'evenement peut ne jamais se declencher.
+La ligne qui dit "Si la question necessite des informations au-dela du livret, complete avec tes connaissances generales en education canine, mais precise-le" sera aussi simplifiee pour ne plus faire reference au livret.
 
-### 2. Remplacer le message de fallback par des instructions visuelles etape par etape
-Si le bouton automatique ne fonctionne toujours pas, l'utilisateur verra des instructions claires et illustrees (comme celles pour iOS), avec 3 etapes numerotees :
-
-1. "Appuyez sur les 3 points en haut a droite de Chrome" (avec icone)
-2. "Selectionnez 'Installer l'application'" (avec icone)  
-3. "Confirmez en appuyant sur 'Installer'" 
-
-### Fichiers modifies
-
-**`vite.config.ts`** : Ajouter `start_url: "/"` et `scope: "/"` au manifest PWA.
-
-**`src/pages/Install.tsx`** : Remplacer le bloc de fallback textuel par des instructions visuelles etape par etape avec des numeros, des icones et un fond colore, identiques au style des instructions iOS deja en place.
-
-### Resultat attendu
-- Si Chrome supporte l'installation automatique : le bouton vert "Installer" apparait (pas de changement)
-- Si le bouton automatique ne fonctionne pas : des instructions claires et visuelles guident l'utilisateur pas a pas
-- Sur iOS : aucun changement, les instructions Safari restent identiques
+## Resultat
+Les reponses du chatbot paraitront plus naturelles et professionnelles, sans reference a un document interne.
