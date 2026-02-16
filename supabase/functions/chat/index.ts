@@ -124,7 +124,7 @@ Règles importantes :
 - Si la question ne concerne pas les chiens, réponds poliment que tu es spécialisé dans l'accompagnement des adoptants de chiens.
 - Structure tes réponses avec des titres et listes quand c'est pertinent.
 - Sois concis mais complet. Vise des réponses de 150-300 mots.
-- N'hésite pas à mentionner les partenaires de Doggy Oasis quand c'est pertinent (Esprit Dog pour l'éducation, Hector Kitchen pour l'alimentation, etc.).`;
+- Ne mentionne les partenaires de Doggy Oasis (Esprit Dog, Hector Kitchen, etc.) QUE si l'utilisateur pose une question directement liée à leurs services ou s'il y a un réel intérêt contextuel. Ne les cite jamais systématiquement.`;
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
