@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Download, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/doggy-oasis-logo.png";
+import { detectPlatform, useStandalone } from "@/lib/platform";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -14,25 +15,18 @@ const DISMISS_DURATION_MS = 7 * 24 * 60 * 60 * 1000; // 7 jours
 
 const InstallPrompt = () => {
   const navigate = useNavigate();
+  const standalone = useStandalone();
   const [visible, setVisible] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
-  const [isIOS, setIsIOS] = useState(false);
+  const platform = detectPlatform();
+  const { isIOS, isAndroidMobile, isIOSSafari, iosBrowser } = platform;
 
   useEffect(() => {
-    // Vérifier si déjà installée (mode standalone)
-    const isStandalone =
-      window.matchMedia("(display-mode: standalone)").matches ||
-      ("standalone" in navigator && (navigator as any).standalone === true);
-    if (isStandalone) return;
+    if (standalone) return;
 
-    // Mobile uniquement
-    const ua = navigator.userAgent;
-    const isIOSDevice =
-      /iPad|iPhone|iPod/.test(ua) ||
-      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-    const isAndroid = /Android/i.test(ua);
-    if (!isIOSDevice && !isAndroid) return;
-    setIsIOS(isIOSDevice);
+    // Mobile uniquement (téléphones, pas tablettes/desktop)
+    const isMobileTarget = platform.isIPhone || isAndroidMobile;
+    if (!isMobileTarget) return;
 
     // Vérifier la fermeture récente
     try {
@@ -44,7 +38,6 @@ const InstallPrompt = () => {
       // localStorage indisponible : on continue
     }
 
-    // Récupérer le prompt natif si déjà capté
     if ((window as any).__deferredInstallPrompt) {
       setDeferredPrompt((window as any).__deferredInstallPrompt as BeforeInstallPromptEvent);
     }
@@ -54,14 +47,19 @@ const InstallPrompt = () => {
     };
     window.addEventListener("beforeinstallprompt", handler);
 
-    // Afficher après 2s
     const timer = setTimeout(() => setVisible(true), 2000);
 
     return () => {
       window.removeEventListener("beforeinstallprompt", handler);
       clearTimeout(timer);
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [standalone]);
+
+  // Masquer automatiquement si l'app vient d'être installée
+  useEffect(() => {
+    if (standalone) setVisible(false);
+  }, [standalone]);
 
   const handleDismiss = () => {
     try {
@@ -81,12 +79,17 @@ const InstallPrompt = () => {
       }
       setDeferredPrompt(null);
     } else {
-      // iOS ou navigateur sans prompt natif : page d'instructions
       navigate("/install");
     }
   };
 
   if (!visible) return null;
+
+  const subtitle = isIOS
+    ? isIOSSafari
+      ? "Ajoutez l'app à votre écran d'accueil"
+      : `Ouvrez ce site dans Safari pour l'installer${iosBrowser ? "" : ""}`
+    : "Sur votre téléphone en un clic";
 
   return (
     <div className="fixed bottom-4 left-4 right-4 z-50 mx-auto max-w-md animate-in fade-in slide-in-from-bottom-4 duration-300">
@@ -97,7 +100,7 @@ const InstallPrompt = () => {
             Installez Doggy Help
           </p>
           <p className="text-xs text-muted-foreground leading-tight mt-0.5">
-            {isIOS ? "Ajoutez l'app à votre écran d'accueil" : "Sur votre téléphone en un clic"}
+            {subtitle}
           </p>
         </div>
         <Button
@@ -106,7 +109,7 @@ const InstallPrompt = () => {
           className="rounded-full gap-1 shrink-0 px-3"
         >
           <Download className="h-4 w-4" />
-          Installer
+          {isIOS && !isIOSSafari ? "Aide" : "Installer"}
         </Button>
         <button
           onClick={handleDismiss}

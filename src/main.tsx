@@ -10,16 +10,32 @@ window.addEventListener("beforeinstallprompt", (e) => {
   (window as any).__deferredInstallPrompt = e;
 });
 
-registerSW({
-  immediate: true,
-  onRegistered(registration) {
-    if (!registration) return;
-    // Force a SW update check on every load so Chrome picks up the new
-    // manifest (and refreshed app name) as soon as possible on installed PWAs.
-    registration.update().catch(() => {});
-    // And again every 60 minutes if the app stays open.
-    setInterval(() => registration.update().catch(() => {}), 60 * 60 * 1000);
-  },
-});
+// Detect Lovable preview / iframe contexts: do NOT register a service worker
+// there because it pollutes the editor with stale caches.
+const isInIframe = (() => {
+  try {
+    return window.self !== window.top;
+  } catch {
+    return true;
+  }
+})();
+const isPreviewHost =
+  window.location.hostname.includes("id-preview--") ||
+  window.location.hostname.includes("lovableproject.com");
+
+if (isPreviewHost || isInIframe) {
+  navigator.serviceWorker?.getRegistrations().then((registrations) => {
+    registrations.forEach((r) => r.unregister());
+  }).catch(() => {});
+} else {
+  registerSW({
+    immediate: true,
+    onRegistered(registration) {
+      if (!registration) return;
+      registration.update().catch(() => {});
+      setInterval(() => registration.update().catch(() => {}), 60 * 60 * 1000);
+    },
+  });
+}
 
 createRoot(document.getElementById("root")!).render(<App />);
