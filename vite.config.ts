@@ -22,8 +22,8 @@ export default defineConfig(({ mode }) => ({
         navigateFallbackDenylist: [/^\/~oauth/],
       },
       manifest: {
-        name: "Doggy Oasis - Assistant Canin",
-        short_name: "Doggy Oasis",
+        name: "Doggy Help",
+        short_name: "Doggy Help",
         description: "Posez vos questions sur l'éducation, les soins et le comportement de votre chien adopté chez Doggy Oasis.",
         theme_color: "#2d8a4e",
         background_color: "#f5f0e8",
