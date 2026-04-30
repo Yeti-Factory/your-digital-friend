@@ -63,10 +63,7 @@ const Install = () => {
     if (!deferredPrompt) return;
     setInstalling(true);
     await deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === "accepted") {
-      setIsInstalled(true);
-    }
+    await deferredPrompt.userChoice;
     setDeferredPrompt(null);
     setInstalling(false);
   };
