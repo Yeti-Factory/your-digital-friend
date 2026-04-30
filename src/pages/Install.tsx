@@ -122,6 +122,64 @@ const Install = () => {
                 </Button>
               </Link>
             </>
+          ) : isIOSOtherBrowser ? (
+            /* iOS in Chrome/Firefox/Edge: must open in Safari to install */
+            <>
+              <p className="text-muted-foreground">
+                Sur iPhone, l'installation n'est possible que depuis <strong>Safari</strong>.
+                Suivez ces étapes :
+              </p>
+
+              <div className="w-full space-y-4 text-left">
+                <div className="flex items-start gap-4 p-3 rounded-lg bg-[hsl(142,50%,95%)]">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[hsl(142,50%,35%)] text-white flex items-center justify-center font-bold text-sm">1</div>
+                  <div>
+                    <p className="font-semibold text-sm">Copiez le lien ci-dessous</p>
+                    <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
+                      <Copy className="w-4 h-4" /> avec le bouton "Copier le lien"
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4 p-3 rounded-lg bg-[hsl(142,50%,95%)]">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[hsl(142,50%,35%)] text-white flex items-center justify-center font-bold text-sm">2</div>
+                  <div>
+                    <p className="font-semibold text-sm">Ouvrez Safari et collez le lien</p>
+                    <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
+                      <ExternalLink className="w-4 h-4" /> dans la barre d'adresse
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4 p-3 rounded-lg bg-[hsl(142,50%,95%)]">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[hsl(142,50%,35%)] text-white flex items-center justify-center font-bold text-sm">3</div>
+                  <div>
+                    <p className="font-semibold text-sm">Appuyez sur Partager puis "Sur l'écran d'accueil"</p>
+                    <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
+                      <Share className="w-4 h-4" /> <Plus className="w-4 h-4" /> pour confirmer
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <Button
+                size="lg"
+                onClick={copyLink}
+                className="bg-[hsl(142,50%,35%)] hover:bg-[hsl(142,50%,30%)] text-white gap-2 w-full"
+              >
+                {copied ? (
+                  <>
+                    <Check className="w-5 h-5" />
+                    Lien copié !
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-5 h-5" />
+                    Copier le lien
+                  </>
+                )}
+              </Button>
+            </>
           ) : isIOS ? (
             /* iOS instructions */
             <>
