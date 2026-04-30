@@ -22,6 +22,8 @@ export default defineConfig(({ mode }) => ({
         navigateFallbackDenylist: [/^\/~oauth/],
       },
       manifest: {
+        id: "/?source=pwa",
+        lang: "fr",
         name: "Doggy Help",
         short_name: "Doggy Help",
         description: "Posez vos questions sur l'éducation, les soins et le comportement de votre chien adopté chez Doggy Oasis.",
