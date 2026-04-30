@@ -1,6 +1,7 @@
 import { MessageCircle, Heart, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/doggy-oasis-logo.png";
+import InstallPrompt from "@/components/InstallPrompt";
 
 const suggestions = [
   "Comment apprendre les bases à mon chien ?",
@@ -63,6 +64,8 @@ const WelcomeScreen = ({ onStart, onSuggestion }: WelcomeScreenProps) => {
       <div className="mt-auto pt-10 flex items-center gap-1 text-xs text-muted-foreground">
         <Heart className="w-3 h-3" /> Doggy Oasis International
       </div>
+
+      <InstallPrompt />
     </div>
   );
 };
