@@ -18,10 +18,22 @@ export default defineConfig(({ mode }) => ({
     mode === "development" && componentTagger(),
     VitePWA({
       registerType: "autoUpdate",
+      devOptions: {
+        enabled: false,
+      },
       workbox: {
         navigateFallbackDenylist: [/^\/~oauth/],
+        runtimeCaching: [
+          {
+            urlPattern: ({ request }) => request.mode === "navigate",
+            handler: "NetworkFirst",
+            options: { cacheName: "html", networkTimeoutSeconds: 3 },
+          },
+        ],
       },
       manifest: {
+        id: "/?source=pwa",
+        lang: "fr",
         name: "Doggy Help",
         short_name: "Doggy Help",
         description: "Posez vos questions sur l'éducation, les soins et le comportement de votre chien adopté chez Doggy Oasis.",

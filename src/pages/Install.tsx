@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Download, Share, Plus, Check, ArrowRight, Loader2, MoreVertical, Copy, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import logo from "@/assets/doggy-oasis-logo.png";
+import { detectPlatform, useStandalone } from "@/lib/platform";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -12,42 +13,32 @@ interface BeforeInstallPromptEvent extends Event {
 
 const Install = () => {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
-  const [isInstalled, setIsInstalled] = useState(false);
-  const [isIOS, setIsIOS] = useState(false);
-  const [isNonChromeAndroid, setIsNonChromeAndroid] = useState(false);
+  const isInstalled = useStandalone();
+  const platform = detectPlatform();
+  const { isIOS, isIOSSafari, isAndroid } = platform;
+  const isIOSOtherBrowser = isIOS && !isIOSSafari;
+  const isNonChromeAndroid = (() => {
+    if (!isAndroid) return false;
+    const ua = navigator.userAgent;
+    const isChrome = /Chrome/i.test(ua) && !/OPR|Opera|Edge|SamsungBrowser|UCBrowser|Firefox/i.test(ua);
+    return !isChrome;
+  })();
   const [installing, setInstalling] = useState(false);
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    // Detect iOS
-    const ua = navigator.userAgent;
-    const isIOSDevice = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-    setIsIOS(isIOSDevice);
-
-    // Detect non-Chrome Android browsers
-    const isAndroid = /Android/i.test(ua);
-    const isChrome = /Chrome/i.test(ua) && !/OPR|Opera|Edge|SamsungBrowser|UCBrowser|Firefox/i.test(ua);
-    setIsNonChromeAndroid(isAndroid && !isChrome);
-    // Detect standalone mode (already installed)
-    const isStandalone = window.matchMedia("(display-mode: standalone)").matches
-      || ("standalone" in navigator && (navigator as any).standalone === true);
-    setIsInstalled(isStandalone);
-
-    // If already installed or iOS, no need to wait
-    if (isStandalone || isIOSDevice) {
+    if (isInstalled || isIOS) {
       setLoading(false);
       return;
     }
 
-    // Check global variable from main.tsx
     if (window.__deferredInstallPrompt) {
       setDeferredPrompt(window.__deferredInstallPrompt as BeforeInstallPromptEvent);
       setLoading(false);
       return;
     }
 
-    // Listen for the event in case it hasn't fired yet
     const handler = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
@@ -55,9 +46,7 @@ const Install = () => {
     };
     window.addEventListener("beforeinstallprompt", handler);
 
-    // Wait up to 3 seconds then stop loading
     const timeout = setTimeout(() => {
-      // Check one more time
       if (window.__deferredInstallPrompt) {
         setDeferredPrompt(window.__deferredInstallPrompt as BeforeInstallPromptEvent);
       }
@@ -68,16 +57,13 @@ const Install = () => {
       window.removeEventListener("beforeinstallprompt", handler);
       clearTimeout(timeout);
     };
-  }, []);
+  }, [isInstalled, isIOS]);
 
   const handleInstall = async () => {
     if (!deferredPrompt) return;
     setInstalling(true);
     await deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === "accepted") {
-      setIsInstalled(true);
-    }
+    await deferredPrompt.userChoice;
     setDeferredPrompt(null);
     setInstalling(false);
   };
@@ -135,6 +121,64 @@ const Install = () => {
                   Ouvrir l'application <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
+            </>
+          ) : isIOSOtherBrowser ? (
+            /* iOS in Chrome/Firefox/Edge: must open in Safari to install */
+            <>
+              <p className="text-muted-foreground">
+                Sur iPhone, l'installation n'est possible que depuis <strong>Safari</strong>.
+                Suivez ces étapes :
+              </p>
+
+              <div className="w-full space-y-4 text-left">
+                <div className="flex items-start gap-4 p-3 rounded-lg bg-[hsl(142,50%,95%)]">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[hsl(142,50%,35%)] text-white flex items-center justify-center font-bold text-sm">1</div>
+                  <div>
+                    <p className="font-semibold text-sm">Copiez le lien ci-dessous</p>
+                    <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
+                      <Copy className="w-4 h-4" /> avec le bouton "Copier le lien"
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4 p-3 rounded-lg bg-[hsl(142,50%,95%)]">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[hsl(142,50%,35%)] text-white flex items-center justify-center font-bold text-sm">2</div>
+                  <div>
+                    <p className="font-semibold text-sm">Ouvrez Safari et collez le lien</p>
+                    <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
+                      <ExternalLink className="w-4 h-4" /> dans la barre d'adresse
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4 p-3 rounded-lg bg-[hsl(142,50%,95%)]">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[hsl(142,50%,35%)] text-white flex items-center justify-center font-bold text-sm">3</div>
+                  <div>
+                    <p className="font-semibold text-sm">Appuyez sur Partager puis "Sur l'écran d'accueil"</p>
+                    <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
+                      <Share className="w-4 h-4" /> <Plus className="w-4 h-4" /> pour confirmer
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <Button
+                size="lg"
+                onClick={copyLink}
+                className="bg-[hsl(142,50%,35%)] hover:bg-[hsl(142,50%,30%)] text-white gap-2 w-full"
+              >
+                {copied ? (
+                  <>
+                    <Check className="w-5 h-5" />
+                    Lien copié !
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-5 h-5" />
+                    Copier le lien
+                  </>
+                )}
+              </Button>
             </>
           ) : isIOS ? (
             /* iOS instructions */
