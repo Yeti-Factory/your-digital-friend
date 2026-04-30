@@ -10,9 +10,9 @@ window.addEventListener("beforeinstallprompt", (e) => {
   (window as any).__deferredInstallPrompt = e;
 });
 
-const updateSW = registerSW({
+registerSW({
   immediate: true,
-  onRegisteredSW(_swUrl, registration) {
+  onRegistered(registration) {
     if (!registration) return;
     // Force a SW update check on every load so Chrome picks up the new
     // manifest (and refreshed app name) as soon as possible on installed PWAs.
