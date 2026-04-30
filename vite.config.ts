@@ -18,6 +18,10 @@ export default defineConfig(({ mode }) => ({
     mode === "development" && componentTagger(),
     VitePWA({
       registerType: "autoUpdate",
+      // Custom filename so changing the version segment invalidates the
+      // navigator's manifest cache. Bump APP_VERSION below when the app
+      // name (or any installed-PWA-pinned field) changes.
+      manifestFilename: "manifest.v2.webmanifest",
       devOptions: {
         enabled: false,
       },
@@ -29,10 +33,18 @@ export default defineConfig(({ mode }) => ({
             handler: "NetworkFirst",
             options: { cacheName: "html", networkTimeoutSeconds: 3 },
           },
+          {
+            // Always go to network for the manifest itself so a renamed
+            // app is picked up immediately on next visit.
+            urlPattern: ({ url }) => url.pathname.endsWith(".webmanifest"),
+            handler: "NetworkOnly",
+          },
         ],
       },
       manifest: {
-        id: "/?source=pwa",
+        // Bumping `id` makes Chrome/Android treat this as a new PWA,
+        // which is necessary when the displayed name changes.
+        id: "/?v=2",
         lang: "fr",
         name: "Doggy Help",
         short_name: "Doggy Help",
@@ -41,7 +53,7 @@ export default defineConfig(({ mode }) => ({
         background_color: "#f5f0e8",
         display: "standalone",
         orientation: "portrait",
-        start_url: "/",
+        start_url: "/?v=2",
         scope: "/",
         icons: [
           {
