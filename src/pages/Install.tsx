@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Download, Share, Plus, Check, ArrowRight, Loader2, MoreVertical, Copy, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import logo from "@/assets/doggy-oasis-logo.png";
+import { detectPlatform, useStandalone } from "@/lib/platform";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -12,42 +13,32 @@ interface BeforeInstallPromptEvent extends Event {
 
 const Install = () => {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
-  const [isInstalled, setIsInstalled] = useState(false);
-  const [isIOS, setIsIOS] = useState(false);
-  const [isNonChromeAndroid, setIsNonChromeAndroid] = useState(false);
+  const isInstalled = useStandalone();
+  const platform = detectPlatform();
+  const { isIOS, isIOSSafari, isAndroid } = platform;
+  const isIOSOtherBrowser = isIOS && !isIOSSafari;
+  const isNonChromeAndroid = (() => {
+    if (!isAndroid) return false;
+    const ua = navigator.userAgent;
+    const isChrome = /Chrome/i.test(ua) && !/OPR|Opera|Edge|SamsungBrowser|UCBrowser|Firefox/i.test(ua);
+    return !isChrome;
+  })();
   const [installing, setInstalling] = useState(false);
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    // Detect iOS
-    const ua = navigator.userAgent;
-    const isIOSDevice = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-    setIsIOS(isIOSDevice);
-
-    // Detect non-Chrome Android browsers
-    const isAndroid = /Android/i.test(ua);
-    const isChrome = /Chrome/i.test(ua) && !/OPR|Opera|Edge|SamsungBrowser|UCBrowser|Firefox/i.test(ua);
-    setIsNonChromeAndroid(isAndroid && !isChrome);
-    // Detect standalone mode (already installed)
-    const isStandalone = window.matchMedia("(display-mode: standalone)").matches
-      || ("standalone" in navigator && (navigator as any).standalone === true);
-    setIsInstalled(isStandalone);
-
-    // If already installed or iOS, no need to wait
-    if (isStandalone || isIOSDevice) {
+    if (isInstalled || isIOS) {
       setLoading(false);
       return;
     }
 
-    // Check global variable from main.tsx
     if (window.__deferredInstallPrompt) {
       setDeferredPrompt(window.__deferredInstallPrompt as BeforeInstallPromptEvent);
       setLoading(false);
       return;
     }
 
-    // Listen for the event in case it hasn't fired yet
     const handler = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
@@ -55,9 +46,7 @@ const Install = () => {
     };
     window.addEventListener("beforeinstallprompt", handler);
 
-    // Wait up to 3 seconds then stop loading
     const timeout = setTimeout(() => {
-      // Check one more time
       if (window.__deferredInstallPrompt) {
         setDeferredPrompt(window.__deferredInstallPrompt as BeforeInstallPromptEvent);
       }
@@ -68,7 +57,7 @@ const Install = () => {
       window.removeEventListener("beforeinstallprompt", handler);
       clearTimeout(timeout);
     };
-  }, []);
+  }, [isInstalled, isIOS]);
 
   const handleInstall = async () => {
     if (!deferredPrompt) return;
