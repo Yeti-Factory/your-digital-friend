@@ -92,12 +92,12 @@ const Install = () => {
           {/* Logo */}
           <img
             src={logo}
-            alt="Doggy Oasis"
+            alt="Doggy Help"
             className="w-28 h-28 rounded-2xl shadow-md"
           />
 
           <h1 className="text-2xl font-bold text-[hsl(142,50%,25%)] font-['Quicksand']">
-            Doggy Oasis
+            Doggy Help
           </h1>
 
           {loading ? (
@@ -114,7 +114,7 @@ const Install = () => {
                 <p className="text-lg font-semibold">Application déjà installée !</p>
               </div>
               <p className="text-muted-foreground text-sm">
-                Vous pouvez ouvrir Doggy Oasis depuis votre écran d'accueil.
+                Vous pouvez ouvrir Doggy Help depuis votre écran d'accueil.
               </p>
               <Link to="/">
                 <Button size="lg" className="bg-[hsl(142,50%,35%)] hover:bg-[hsl(142,50%,30%)] text-white gap-2">
@@ -184,7 +184,7 @@ const Install = () => {
             /* iOS instructions */
             <>
               <p className="text-muted-foreground">
-                Installez Doggy Oasis sur votre iPhone en 3 étapes :
+                Installez Doggy Help sur votre iPhone en 3 étapes :
               </p>
 
               <div className="w-full space-y-4 text-left">
@@ -213,7 +213,7 @@ const Install = () => {
                   <div>
                     <p className="font-semibold text-sm">Confirmez en appuyant sur "Ajouter"</p>
                     <p className="text-xs text-muted-foreground mt-1">
-                      L'icône Doggy Oasis apparaîtra sur votre écran d'accueil
+                      L'icône Doggy Help apparaîtra sur votre écran d'accueil
                     </p>
                   </div>
                 </div>
@@ -296,7 +296,7 @@ const Install = () => {
             /* Fallback: visual step-by-step instructions for Android */
             <>
               <p className="text-muted-foreground">
-                Installez Doggy Oasis en 3 étapes simples :
+                Installez Doggy Help en 3 étapes simples :
               </p>
 
               <div className="w-full space-y-4 text-left">
@@ -325,7 +325,7 @@ const Install = () => {
                   <div>
                     <p className="font-semibold text-sm">Confirmez en appuyant sur "Installer"</p>
                     <p className="text-xs text-muted-foreground mt-1">
-                      L'icône Doggy Oasis apparaîtra sur votre écran d'accueil
+                      L'icône Doggy Help apparaîtra sur votre écran d'accueil
                     </p>
                   </div>
                 </div>
