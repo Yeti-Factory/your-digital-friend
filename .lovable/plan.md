@@ -1,38 +1,41 @@
-# Invitation automatique à installer Doggy Help
+Constat : le manifeste publié indique déjà `name` et `short_name` à `Doggy Help`, mais le HTML publié contient deux liens vers le manifeste :
 
-## Objectif
-Proposer spontanément l'installation de l'app dès l'ouverture, sans forcer l'utilisateur à trouver la page `/install`.
+```text
+<link rel="manifest" href="/manifest.webmanifest?v=doggy-help-1" />
+...
+<link rel="manifest" href="/manifest.webmanifest">
+```
 
-## Comportement
-- **Affichage** : bandeau flottant en bas de l'écran d'accueil, apparaît 2 secondes après le chargement.
-- **Conditions d'affichage** :
-  - Uniquement sur mobile (iOS ou Android)
-  - Uniquement si l'app n'est pas déjà installée (pas en mode standalone)
-  - Pas si l'utilisateur l'a fermé dans les 7 derniers jours
-- **Action du bouton "Installer"** :
-  - Android Chrome → déclenche le prompt natif via `beforeinstallprompt`
-  - iOS Safari / autres navigateurs → redirige vers `/install` (instructions visuelles existantes)
-- **Bouton ✕** pour fermer → mémorisé 7 jours via `localStorage`
-- Disparaît définitivement une fois l'app installée
+Ce second lien est injecté par la génération PWA et peut faire que le téléphone relit l’ancien manifeste ou ignore le lien versionné. De plus, sur iOS, le libellé de l’icône peut aussi venir du meta tag `apple-mobile-web-app-title`, qui n’est pas présent actuellement.
 
-## Design
-- Bandeau bas, fond blanc avec ombre, coins arrondis
-- Icône logo + texte court : « Installez Doggy Help sur votre téléphone »
-- Bouton vert primaire « Installer » + bouton ✕ discret
-- Charte respectée : vert #2d8a4e, police Quicksand
+Plan proposé :
 
-## Fichiers
+1. Fixer explicitement le nom iOS
+   - Ajouter dans `index.html` :
+     - `apple-mobile-web-app-title` avec le nom voulu.
+   - Harmoniser le titre et les métadonnées autour du même libellé.
 
-**Nouveau** : `src/components/InstallPrompt.tsx`
-- Détection plateforme (iOS, Android, standalone, desktop)
-- Lecture de `window.__deferredInstallPrompt` (déjà capté dans `main.tsx`)
-- Gestion localStorage (`doggy-help-install-dismissed-at`)
-- Délai d'apparition 2s + animation fade-in
+2. Éviter le double manifeste
+   - Supprimer le `<link rel="manifest">` manuel de `index.html` ou le laisser être géré uniquement par `vite-plugin-pwa`, afin que le HTML final ne contienne qu’un seul manifeste.
+   - Définir la même valeur de nom dans la config PWA pour `name` et `short_name`.
 
-**Modifié** : `src/components/WelcomeScreen.tsx`
-- Import et rendu de `<InstallPrompt />` à la fin du composant
+3. Forcer un vrai changement détectable par Android/iOS
+   - Ajouter un champ `id` stable au manifeste.
+   - Mettre `lang: "fr"`.
+   - Si nécessaire, faire évoluer `short_name` vers le libellé exact souhaité pour l’icône.
+   - Garder en tête que certains téléphones gardent le nom d’une ancienne installation tant que le raccourci ou l’entrée PWA n’a pas été totalement supprimé côté navigateur.
 
-## Hors périmètre
-- Page `/install` inchangée (reste le fallback détaillé)
-- Aucune nouvelle dépendance
-- Aucun changement backend
+4. Fiabiliser la PWA en environnement Lovable
+   - Garder l’installabilité en production.
+   - Empêcher l’enregistrement du service worker dans l’éditeur/preview Lovable et dans les iframes, pour limiter les caches persistants qui peuvent masquer les changements.
+   - Conserver le comportement publié pour les utilisateurs réels.
+
+5. Ajouter les améliorations de détection déjà demandées
+   - Créer une logique centralisée de détection plateforme/standalone.
+   - Réduire les faux positifs iOS/Android : iPhone, iPad, iPod, Android mobile/tablette, desktop iPadOS, navigateurs iOS tiers.
+   - Vérifier le mode standalone via `display-mode`, `navigator.standalone`, `appinstalled`, et cas Android/TWA.
+   - Adapter le bandeau d’installation et la page `/install` selon Safari iOS vs Chrome/Firefox/Edge iOS.
+
+Question nécessaire avant implémentation : quel texte exact voulez-vous sous l’icône ?
+
+Par défaut, je mettrai `Doggy Help` partout. Si vous voulez plutôt `Doggy Oasis`, `Doggy Oasis International`, ou un autre libellé court, dites-moi lequel avant validation.
