@@ -10,6 +10,16 @@ window.addEventListener("beforeinstallprompt", (e) => {
   (window as any).__deferredInstallPrompt = e;
 });
 
-registerSW({ immediate: true });
+registerSW({
+  immediate: true,
+  onRegistered(registration) {
+    if (!registration) return;
+    // Force a SW update check on every load so Chrome picks up the new
+    // manifest (and refreshed app name) as soon as possible on installed PWAs.
+    registration.update().catch(() => {});
+    // And again every 60 minutes if the app stays open.
+    setInterval(() => registration.update().catch(() => {}), 60 * 60 * 1000);
+  },
+});
 
 createRoot(document.getElementById("root")!).render(<App />);
