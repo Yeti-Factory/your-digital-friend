@@ -1,4 +1,4 @@
-import { MessageCircle, Heart, ChevronDown, LogOut } from "lucide-react";
+import { MessageCircle, Heart, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/doggy-oasis-logo.png";
 import InstallPrompt from "@/components/InstallPrompt";
@@ -21,21 +21,11 @@ const suggestions = [
 interface WelcomeScreenProps {
   onStart: () => void;
   onSuggestion: (q: string) => void;
-  onLogout: () => void;
 }
 
-const WelcomeScreen = ({ onStart, onSuggestion, onLogout }: WelcomeScreenProps) => {
+const WelcomeScreen = ({ onStart, onSuggestion }: WelcomeScreenProps) => {
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen px-6 py-10">
-      <Button
-        variant="ghost"
-        size="sm"
-        onClick={onLogout}
-        className="absolute right-4 top-4 gap-2"
-      >
-        <LogOut className="w-4 h-4" />
-        Déconnexion
-      </Button>
       <img src={logo} alt="Doggy Help" className="w-48 h-auto mb-6" />
 
       <p className="text-muted-foreground text-center max-w-md mb-8 text-base leading-relaxed">

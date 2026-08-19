@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { ArrowLeft, Send, RotateCcw, Loader2, Home, MessageCircle, LogOut } from "lucide-react";
+import { ArrowLeft, Send, RotateCcw, Loader2, Home, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Message, streamChat } from "@/lib/chat-stream";
@@ -9,11 +9,10 @@ import remarkGfm from "remark-gfm";
 
 interface ChatScreenProps {
   onBack: () => void;
-  onLogout: () => void;
   initialMessage?: string;
 }
 
-const ChatScreen = ({ onBack, onLogout, initialMessage }: ChatScreenProps) => {
+const ChatScreen = ({ onBack, initialMessage }: ChatScreenProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -101,9 +100,6 @@ const ChatScreen = ({ onBack, onLogout, initialMessage }: ChatScreenProps) => {
         </div>
         <Button variant="ghost" size="icon" onClick={handleNewChat} title="Nouvelle conversation">
           <RotateCcw className="w-4 h-4" />
-        </Button>
-        <Button variant="ghost" size="icon" onClick={onLogout} title="Déconnexion">
-          <LogOut className="w-4 h-4" />
         </Button>
       </header>
 
