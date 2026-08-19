@@ -5,11 +5,6 @@ import { Button } from "@/components/ui/button";
 import logo from "@/assets/doggy-oasis-logo.png";
 import { detectPlatform, useStandalone } from "@/lib/platform";
 
-interface BeforeInstallPromptEvent extends Event {
-  prompt: () => Promise<void>;
-  userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
-}
-
 const DISMISS_KEY = "doggy-help-install-dismissed-at";
 const DISMISS_DURATION_MS = 7 * 24 * 60 * 60 * 1000; // 7 jours
 
@@ -38,8 +33,8 @@ const InstallPrompt = () => {
       // localStorage indisponible : on continue
     }
 
-    if ((window as any).__deferredInstallPrompt) {
-      setDeferredPrompt((window as any).__deferredInstallPrompt as BeforeInstallPromptEvent);
+    if (window.__deferredInstallPrompt) {
+      setDeferredPrompt(window.__deferredInstallPrompt);
     }
     const handler = (e: Event) => {
       e.preventDefault();

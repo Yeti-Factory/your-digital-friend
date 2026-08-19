@@ -2,7 +2,11 @@ import { useState } from "react";
 import WelcomeScreen from "@/components/WelcomeScreen";
 import ChatScreen from "@/components/ChatScreen";
 
-const Index = () => {
+interface IndexProps {
+  onLogout: () => void;
+}
+
+const Index = ({ onLogout }: IndexProps) => {
   const [chatOpen, setChatOpen] = useState(false);
   const [initialMessage, setInitialMessage] = useState<string | undefined>();
 
@@ -22,10 +26,10 @@ const Index = () => {
   };
 
   if (chatOpen) {
-    return <ChatScreen onBack={handleBack} initialMessage={initialMessage} />;
+    return <ChatScreen onBack={handleBack} onLogout={onLogout} initialMessage={initialMessage} />;
   }
 
-  return <WelcomeScreen onStart={handleStart} onSuggestion={handleSuggestion} />;
+  return <WelcomeScreen onStart={handleStart} onSuggestion={handleSuggestion} onLogout={onLogout} />;
 };
 
 export default Index;

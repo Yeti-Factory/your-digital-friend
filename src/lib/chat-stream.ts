@@ -1,6 +1,6 @@
 export type Message = { role: "user" | "assistant"; content: string };
 
-const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
+const CHAT_URL = "/api/chat";
 
 export async function streamChat({
   messages,
@@ -15,9 +15,9 @@ export async function streamChat({
 }) {
   const resp = await fetch(CHAT_URL, {
     method: "POST",
+    credentials: "same-origin",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
     },
     body: JSON.stringify({ messages }),
   });
@@ -28,6 +28,11 @@ export async function streamChat({
   }
   if (resp.status === 402) {
     onError("Crédits épuisés. Veuillez recharger votre compte.");
+    return;
+  }
+  if (resp.status === 401) {
+    onError("Votre session a expiré. Reconnexion en cours…");
+    window.setTimeout(() => window.location.reload(), 800);
     return;
   }
   if (!resp.ok || !resp.body) {
@@ -79,7 +84,9 @@ export async function streamChat({
         const parsed = JSON.parse(json);
         const content = parsed.choices?.[0]?.delta?.content;
         if (content) onDelta(content);
-      } catch {}
+      } catch {
+        // Une dernière trame incomplète peut être ignorée après la fin du flux.
+      }
     }
   }
 
