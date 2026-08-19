@@ -25,7 +25,7 @@ interface WelcomeScreenProps {
 
 const WelcomeScreen = ({ onStart, onSuggestion }: WelcomeScreenProps) => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen px-6 py-10">
+    <div className="relative flex flex-col items-center justify-center min-h-screen px-6 py-10">
       <img src={logo} alt="Doggy Help" className="w-48 h-auto mb-6" />
 
       <p className="text-muted-foreground text-center max-w-md mb-8 text-base leading-relaxed">

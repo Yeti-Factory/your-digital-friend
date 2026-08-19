@@ -21,7 +21,7 @@ export function detectPlatform(): PlatformInfo {
     };
   }
   const ua = navigator.userAgent || "";
-  const platform = (navigator as any).platform || "";
+  const platform = navigator.platform || "";
   const maxTouch = navigator.maxTouchPoints || 0;
 
   const isIPhone = /iPhone/.test(ua) && !/iPad/.test(ua);
@@ -63,7 +63,7 @@ export function detectStandalone(): boolean {
     if (window.matchMedia?.("(display-mode: standalone)").matches) return true;
     if (window.matchMedia?.("(display-mode: fullscreen)").matches) return true;
     if (window.matchMedia?.("(display-mode: minimal-ui)").matches) return true;
-    if ("standalone" in navigator && (navigator as any).standalone === true) return true;
+    if ("standalone" in navigator && (navigator as Navigator & { standalone?: boolean }).standalone === true) return true;
     // Trusted Web Activity (Android)
     if (document.referrer.startsWith("android-app://")) return true;
   } catch {

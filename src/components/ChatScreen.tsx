@@ -25,6 +25,8 @@ const ChatScreen = ({ onBack, initialMessage }: ChatScreenProps) => {
       hasSentInitial.current = true;
       sendMessage(initialMessage);
     }
+    // L'envoi initial ne doit avoir lieu qu'une seule fois à l'ouverture du chat.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialMessage]);
 
   useEffect(() => {

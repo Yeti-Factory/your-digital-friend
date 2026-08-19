@@ -1,73 +1,50 @@
-# Welcome to your Lovable project
+# Doggy Friend / Doggy Help
 
-## Project info
+Assistant canin public de Doggy Oasis International. Cette version est conçue pour être hébergée sur le VPS OVH avec Coolify, sans dépendance à Lovable ni à Supabase.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Fonctionnement
 
-## How can I edit this code?
+- interface React/PWA conservée ;
+- accès public conservé pour ne pas interrompre les utilisateurs actuels ;
+- limitation par adresse IP à 30 questions par heure pour maîtriser les coûts ;
+- serveur Node intégré pour le dialogue avec un moteur d'IA compatible avec l'API OpenAI ;
+- aucune conversation ni donnée personnelle enregistrée ;
+- aucune base de données requise.
 
-There are several ways of editing your application.
+## Variables obligatoires
 
-**Use Lovable**
+Copier `.env.example` vers `.env` pour un essai local ou saisir les variables directement dans Coolify :
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+- `AI_API_URL` : URL OpenAI-compatible du fournisseur choisi ;
+- `AI_API_KEY` : clé du fournisseur IA ;
+- `AI_MODEL` : nom du modèle ;
+- `PORT` : port interne, 3000 par défaut.
 
-Changes made via Lovable will be committed automatically to this repo.
+Les secrets ne doivent jamais être ajoutés au dépôt GitHub.
 
-**Use your preferred IDE**
+## Développement
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```bash
+npm ci
+npm run build
+npm test
 ```
 
-**Edit a file directly in GitHub**
+Pour tester l'application complète, renseigner les variables d'environnement puis lancer :
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+npm start
+```
 
-**Use GitHub Codespaces**
+La route `/health` permet à Coolify de vérifier que le service fonctionne.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Déploiement Coolify
 
-## What technologies are used for this project?
+1. Créer une application à partir du dépôt GitHub et de la branche de migration.
+2. Choisir le Dockerfile du dépôt.
+3. Définir le port interne `3000`.
+4. Ajouter les variables d'environnement ci-dessus.
+5. Déployer d'abord sur une adresse de test.
+6. Vérifier une conversation complète depuis un ordinateur et un téléphone avant toute bascule de domaine.
 
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+L'ancienne application n'enregistre aucun compte, aucune adresse email et aucune conversation. La continuité utilisateur repose donc sur la redirection de l'ancienne adresse et sur la mise à jour du QR code.
