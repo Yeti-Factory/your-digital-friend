@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Download, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logo from "@/assets/doggy-oasis-logo.png";
+import DoggyFriendLogo from "@/components/DoggyFriendLogo";
 import { detectPlatform, useStandalone } from "@/lib/platform";
 
 const DISMISS_KEY = "doggy-help-install-dismissed-at";
@@ -89,10 +89,10 @@ const InstallPrompt = () => {
   return (
     <div className="fixed bottom-4 left-4 right-4 z-50 mx-auto max-w-md animate-in fade-in slide-in-from-bottom-4 duration-300">
       <div className="flex items-center gap-3 rounded-2xl border border-border bg-card p-3 shadow-lg">
-        <img src={logo} alt="Doggy Help" className="h-12 w-12 rounded-xl shrink-0" />
+        <DoggyFriendLogo size="compact" showPoweredBy={false} className="shrink-0" />
         <div className="flex-1 min-w-0">
           <p className="text-sm font-semibold text-foreground font-['Quicksand'] leading-tight">
-            Installez Doggy Help
+            Installez Doggy Friend
           </p>
           <p className="text-xs text-muted-foreground leading-tight mt-0.5">
             {subtitle}

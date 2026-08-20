@@ -42,16 +42,16 @@ export default defineConfig(({ mode }) => ({
       manifest: {
         // Bumping `id` makes Chrome/Android treat this as a new PWA,
         // which is necessary when the displayed name changes.
-        id: "/?v=2",
+        id: "/?v=3",
         lang: "fr",
-        name: "Doggy Help",
-        short_name: "Doggy Help",
+        name: "Doggy Friend",
+        short_name: "Doggy Friend",
         description: "Posez vos questions sur l'éducation, les soins et le comportement de votre chien adopté chez Doggy Oasis.",
-        theme_color: "#2d8a4e",
-        background_color: "#f5f0e8",
+        theme_color: "#1a3b5d",
+        background_color: "#fff8f1",
         display: "standalone",
         orientation: "portrait",
-        start_url: "/?v=2",
+        start_url: "/?v=3",
         scope: "/",
         icons: [
           {

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Loader2, Check, RefreshCw } from "lucide-react";
-import logo from "@/assets/doggy-oasis-logo.png";
+import DoggyFriendLogo from "@/components/DoggyFriendLogo";
 
 /**
  * Page de secours pour forcer un reset complet du cache PWA.
@@ -48,17 +48,17 @@ const ResetPwa = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[hsl(142,50%,95%)] to-[hsl(142,50%,88%)] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-b from-[hsl(35,60%,97%)] to-[hsl(28,85%,94%)] flex items-center justify-center p-4">
       <Card className="w-full max-w-md border-none shadow-xl bg-white/90 backdrop-blur">
         <CardContent className="flex flex-col items-center text-center p-8 gap-6">
-          <img src={logo} alt="Doggy Help" className="w-24 h-24 rounded-2xl shadow-md" />
-          <h1 className="text-xl font-bold text-[hsl(142,50%,25%)] font-['Quicksand']">
+          <DoggyFriendLogo size="card" />
+          <h1 className="text-xl font-bold text-primary font-['Quicksand']">
             Réinitialisation de l'application
           </h1>
 
           {!done && !error && (
             <>
-              <Loader2 className="w-8 h-8 animate-spin text-[hsl(142,50%,35%)]" />
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
               <p className="text-sm text-muted-foreground">
                 Nettoyage du cache en cours…
               </p>
@@ -67,7 +67,7 @@ const ResetPwa = () => {
 
           {done && (
             <>
-              <div className="flex items-center gap-2 text-[hsl(142,50%,35%)]">
+              <div className="flex items-center gap-2 text-primary">
                 <Check className="w-6 h-6" />
                 <p className="font-semibold">Cache vidé !</p>
               </div>
@@ -78,7 +78,7 @@ const ResetPwa = () => {
               <Button
                 onClick={reload}
                 size="lg"
-                className="bg-[hsl(142,50%,35%)] hover:bg-[hsl(142,50%,30%)] text-white gap-2 w-full"
+                className="gap-2 w-full"
               >
                 <RefreshCw className="w-5 h-5" />
                 Recharger l'application

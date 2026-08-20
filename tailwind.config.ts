@@ -54,6 +54,10 @@ export default {
           green: "hsl(var(--doggy-green))",
           brown: "hsl(var(--doggy-brown))",
         },
+        brand: {
+          navy: "hsl(var(--brand-navy))",
+          orange: "hsl(var(--brand-orange))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
