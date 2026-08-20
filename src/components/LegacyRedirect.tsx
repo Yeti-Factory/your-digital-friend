@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import doggyOasisLogo from "@/assets/doggy-oasis-logo.png";
+import DoggyFriendLogo from "@/components/DoggyFriendLogo";
 import { buildNewAppUrl } from "@/lib/legacy-host";
 
 const REDIRECT_DELAY_MS = 6_000;
@@ -18,11 +18,7 @@ export default function LegacyRedirect() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-background px-6 py-12 text-foreground">
       <section className="w-full max-w-xl rounded-3xl border border-border bg-card p-8 text-center shadow-xl sm:p-12">
-        <img
-          src={doggyOasisLogo}
-          alt="Doggy Oasis International"
-          className="mx-auto mb-6 h-24 w-24 rounded-full object-contain"
-        />
+        <DoggyFriendLogo size="card" className="mb-8" />
         <p className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-primary">
           Changement d’adresse
         </p>

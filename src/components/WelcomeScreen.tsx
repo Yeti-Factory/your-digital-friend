@@ -1,6 +1,6 @@
 import { MessageCircle, Heart, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logo from "@/assets/doggy-oasis-logo.png";
+import DoggyFriendLogo from "@/components/DoggyFriendLogo";
 import InstallPrompt from "@/components/InstallPrompt";
 
 const suggestions = [
@@ -26,7 +26,7 @@ interface WelcomeScreenProps {
 const WelcomeScreen = ({ onStart, onSuggestion }: WelcomeScreenProps) => {
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen px-6 py-10">
-      <img src={logo} alt="Doggy Help" className="w-48 h-auto mb-6" />
+      <DoggyFriendLogo className="mb-8" />
 
       <p className="text-muted-foreground text-center max-w-md mb-8 text-base leading-relaxed">
         Merci d'avoir offert une nouvelle vie à l'un de nos protégés ! 🐾 Cette application est votre compagnon au quotidien : posez vos questions sur l'éducation, les soins, l'alimentation ou le comportement de votre chien, et recevez des conseils adaptés basés sur notre expérience.
@@ -62,7 +62,7 @@ const WelcomeScreen = ({ onStart, onSuggestion }: WelcomeScreenProps) => {
       </div>
 
       <div className="mt-auto pt-10 flex items-center gap-1 text-xs text-muted-foreground">
-        <Heart className="w-3 h-3" /> Doggy Help
+        <Heart className="w-3 h-3 text-brand-orange" /> Doggy Friend
       </div>
 
       <InstallPrompt />

@@ -95,7 +95,10 @@ const ChatScreen = ({ onBack, initialMessage }: ChatScreenProps) => {
           <ArrowLeft className="w-5 h-5" />
         </Button>
         <div className="flex-1 min-w-0">
-          <h2 className="font-bold text-base truncate">Doggy Help</h2>
+          <h2 className="font-bold text-base truncate">
+            <span className="text-brand-navy">Doggy</span>{" "}
+            <span className="text-brand-orange">Friend</span>
+          </h2>
           <p className="text-xs text-muted-foreground">Assistant canin 🐾</p>
         </div>
         <Button variant="ghost" size="icon" onClick={handleNewChat} title="Nouvelle conversation">

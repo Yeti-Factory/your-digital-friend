@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360" role="img" aria-labelledby="title description">
+  <title id="title">Doggy Friend, powered by Yeti Lab</title>
+  <desc id="description">Logo typographique bleu nuit et orange sur fond transparent.</desc>
+
+  <g font-family="Montserrat, Arial, sans-serif">
+    <text x="35" y="210" fill="#1A3B5D" font-size="164" font-weight="800" letter-spacing="-9">Doggy</text>
+    <text x="527" y="210" fill="#F58220" font-size="164" font-weight="800" letter-spacing="-9">Friend</text>
+
+    <g transform="translate(620 255)">
+      <text x="0" y="38" fill="#617184" font-size="28" font-weight="700" letter-spacing="4">POWERED BY</text>
+      <text x="229" y="43" fill="#F58220" font-size="50" font-weight="900" letter-spacing="-5">Y</text>
+      <text x="262" y="43" fill="#1A3B5D" font-size="50" font-weight="900" letter-spacing="-5">ETI</text>
+      <rect x="340" y="0" width="151" height="56" rx="8" fill="#1A3B5D"/>
+      <text x="365" y="40" fill="#F58220" font-size="34" font-weight="900" letter-spacing="6">LAB</text>
+    </g>
+  </g>
+</svg>

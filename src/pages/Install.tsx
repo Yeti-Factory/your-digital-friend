@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Download, Share, Plus, Check, ArrowRight, Loader2, MoreVertical, Copy, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
-import logo from "@/assets/doggy-oasis-logo.png";
+import DoggyFriendLogo from "@/components/DoggyFriendLogo";
 import { detectPlatform, useStandalone } from "@/lib/platform";
 
 interface BeforeInstallPromptEvent extends Event {
@@ -86,38 +86,29 @@ const Install = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[hsl(142,50%,95%)] to-[hsl(142,50%,88%)] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-b from-[hsl(35,60%,97%)] to-[hsl(28,85%,94%)] flex items-center justify-center p-4">
       <Card className="w-full max-w-md border-none shadow-xl bg-white/90 backdrop-blur">
         <CardContent className="flex flex-col items-center text-center p-8 gap-6">
-          {/* Logo */}
-          <img
-            src={logo}
-            alt="Doggy Help"
-            className="w-28 h-28 rounded-2xl shadow-md"
-          />
-
-          <h1 className="text-2xl font-bold text-[hsl(142,50%,25%)] font-['Quicksand']">
-            Doggy Help
-          </h1>
+          <DoggyFriendLogo size="card" />
 
           {loading ? (
             /* Loading spinner */
             <>
-              <Loader2 className="w-8 h-8 animate-spin text-[hsl(142,50%,35%)]" />
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
               <p className="text-muted-foreground">Préparation de l'installation...</p>
             </>
           ) : isInstalled ? (
             /* Already installed */
             <>
-              <div className="flex items-center gap-2 text-[hsl(142,50%,35%)]">
+              <div className="flex items-center gap-2 text-primary">
                 <Check className="w-6 h-6" />
                 <p className="text-lg font-semibold">Application déjà installée !</p>
               </div>
               <p className="text-muted-foreground text-sm">
-                Vous pouvez ouvrir Doggy Help depuis votre écran d'accueil.
+                Vous pouvez ouvrir Doggy Friend depuis votre écran d'accueil.
               </p>
               <Link to="/">
-                <Button size="lg" className="bg-[hsl(142,50%,35%)] hover:bg-[hsl(142,50%,30%)] text-white gap-2">
+                <Button size="lg" className="gap-2">
                   Ouvrir l'application <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
@@ -131,8 +122,8 @@ const Install = () => {
               </p>
 
               <div className="w-full space-y-4 text-left">
-                <div className="flex items-start gap-4 p-3 rounded-lg bg-[hsl(142,50%,95%)]">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[hsl(142,50%,35%)] text-white flex items-center justify-center font-bold text-sm">1</div>
+                <div className="flex items-start gap-4 p-3 rounded-lg bg-secondary">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">1</div>
                   <div>
                     <p className="font-semibold text-sm">Copiez le lien ci-dessous</p>
                     <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
@@ -141,8 +132,8 @@ const Install = () => {
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4 p-3 rounded-lg bg-[hsl(142,50%,95%)]">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[hsl(142,50%,35%)] text-white flex items-center justify-center font-bold text-sm">2</div>
+                <div className="flex items-start gap-4 p-3 rounded-lg bg-secondary">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">2</div>
                   <div>
                     <p className="font-semibold text-sm">Ouvrez Safari et collez le lien</p>
                     <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
@@ -151,8 +142,8 @@ const Install = () => {
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4 p-3 rounded-lg bg-[hsl(142,50%,95%)]">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[hsl(142,50%,35%)] text-white flex items-center justify-center font-bold text-sm">3</div>
+                <div className="flex items-start gap-4 p-3 rounded-lg bg-secondary">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">3</div>
                   <div>
                     <p className="font-semibold text-sm">Appuyez sur Partager puis "Sur l'écran d'accueil"</p>
                     <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
@@ -165,7 +156,7 @@ const Install = () => {
               <Button
                 size="lg"
                 onClick={copyLink}
-                className="bg-[hsl(142,50%,35%)] hover:bg-[hsl(142,50%,30%)] text-white gap-2 w-full"
+                className="gap-2 w-full"
               >
                 {copied ? (
                   <>
@@ -184,12 +175,12 @@ const Install = () => {
             /* iOS instructions */
             <>
               <p className="text-muted-foreground">
-                Installez Doggy Help sur votre iPhone en 3 étapes :
+                Installez Doggy Friend sur votre iPhone en 3 étapes :
               </p>
 
               <div className="w-full space-y-4 text-left">
-                <div className="flex items-start gap-4 p-3 rounded-lg bg-[hsl(142,50%,95%)]">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[hsl(142,50%,35%)] text-white flex items-center justify-center font-bold text-sm">1</div>
+                <div className="flex items-start gap-4 p-3 rounded-lg bg-secondary">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">1</div>
                   <div>
                     <p className="font-semibold text-sm">Appuyez sur le bouton Partager</p>
                     <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
@@ -198,8 +189,8 @@ const Install = () => {
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4 p-3 rounded-lg bg-[hsl(142,50%,95%)]">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[hsl(142,50%,35%)] text-white flex items-center justify-center font-bold text-sm">2</div>
+                <div className="flex items-start gap-4 p-3 rounded-lg bg-secondary">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">2</div>
                   <div>
                     <p className="font-semibold text-sm">Choisissez "Sur l'écran d'accueil"</p>
                     <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
@@ -208,12 +199,12 @@ const Install = () => {
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4 p-3 rounded-lg bg-[hsl(142,50%,95%)]">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[hsl(142,50%,35%)] text-white flex items-center justify-center font-bold text-sm">3</div>
+                <div className="flex items-start gap-4 p-3 rounded-lg bg-secondary">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">3</div>
                   <div>
                     <p className="font-semibold text-sm">Confirmez en appuyant sur "Ajouter"</p>
                     <p className="text-xs text-muted-foreground mt-1">
-                      L'icône Doggy Help apparaîtra sur votre écran d'accueil
+                      L'icône Doggy Friend apparaîtra sur votre écran d'accueil
                     </p>
                   </div>
                 </div>
@@ -227,8 +218,8 @@ const Install = () => {
               </p>
 
               <div className="w-full space-y-4 text-left">
-                <div className="flex items-start gap-4 p-3 rounded-lg bg-[hsl(142,50%,95%)]">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[hsl(142,50%,35%)] text-white flex items-center justify-center font-bold text-sm">1</div>
+                <div className="flex items-start gap-4 p-3 rounded-lg bg-secondary">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">1</div>
                   <div>
                     <p className="font-semibold text-sm">Copiez le lien ci-dessous</p>
                     <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
@@ -237,8 +228,8 @@ const Install = () => {
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4 p-3 rounded-lg bg-[hsl(142,50%,95%)]">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[hsl(142,50%,35%)] text-white flex items-center justify-center font-bold text-sm">2</div>
+                <div className="flex items-start gap-4 p-3 rounded-lg bg-secondary">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">2</div>
                   <div>
                     <p className="font-semibold text-sm">Ouvrez Chrome sur votre téléphone</p>
                     <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
@@ -247,8 +238,8 @@ const Install = () => {
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4 p-3 rounded-lg bg-[hsl(142,50%,95%)]">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[hsl(142,50%,35%)] text-white flex items-center justify-center font-bold text-sm">3</div>
+                <div className="flex items-start gap-4 p-3 rounded-lg bg-secondary">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">3</div>
                   <div>
                     <p className="font-semibold text-sm">Collez le lien et suivez les instructions</p>
                     <p className="text-xs text-muted-foreground mt-1">
@@ -261,7 +252,7 @@ const Install = () => {
               <Button
                 size="lg"
                 onClick={copyLink}
-                className="bg-[hsl(142,50%,35%)] hover:bg-[hsl(142,50%,30%)] text-white gap-2 w-full"
+                className="gap-2 w-full"
               >
                 {copied ? (
                   <>
@@ -286,7 +277,7 @@ const Install = () => {
                 size="lg"
                 onClick={handleInstall}
                 disabled={installing}
-                className="bg-[hsl(142,50%,35%)] hover:bg-[hsl(142,50%,30%)] text-white gap-2 w-full"
+                className="gap-2 w-full"
               >
                 <Download className="w-5 h-5" />
                 {installing ? "Installation..." : "Installer l'application"}
@@ -296,12 +287,12 @@ const Install = () => {
             /* Fallback: visual step-by-step instructions for Android */
             <>
               <p className="text-muted-foreground">
-                Installez Doggy Help en 3 étapes simples :
+                Installez Doggy Friend en 3 étapes simples :
               </p>
 
               <div className="w-full space-y-4 text-left">
-                <div className="flex items-start gap-4 p-3 rounded-lg bg-[hsl(142,50%,95%)]">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[hsl(142,50%,35%)] text-white flex items-center justify-center font-bold text-sm">1</div>
+                <div className="flex items-start gap-4 p-3 rounded-lg bg-secondary">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">1</div>
                   <div>
                     <p className="font-semibold text-sm">Appuyez sur les 3 points</p>
                     <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
@@ -310,8 +301,8 @@ const Install = () => {
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4 p-3 rounded-lg bg-[hsl(142,50%,95%)]">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[hsl(142,50%,35%)] text-white flex items-center justify-center font-bold text-sm">2</div>
+                <div className="flex items-start gap-4 p-3 rounded-lg bg-secondary">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">2</div>
                   <div>
                     <p className="font-semibold text-sm">Sélectionnez "Installer l'application"</p>
                     <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
@@ -320,12 +311,12 @@ const Install = () => {
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4 p-3 rounded-lg bg-[hsl(142,50%,95%)]">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[hsl(142,50%,35%)] text-white flex items-center justify-center font-bold text-sm">3</div>
+                <div className="flex items-start gap-4 p-3 rounded-lg bg-secondary">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">3</div>
                   <div>
                     <p className="font-semibold text-sm">Confirmez en appuyant sur "Installer"</p>
                     <p className="text-xs text-muted-foreground mt-1">
-                      L'icône Doggy Help apparaîtra sur votre écran d'accueil
+                      L'icône Doggy Friend apparaîtra sur votre écran d'accueil
                     </p>
                   </div>
                 </div>
